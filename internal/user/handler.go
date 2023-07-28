@@ -3,6 +3,7 @@ package user
 import (
 	"net/http"
 	"rest-api/internal/handlers"
+	"rest-api/pkg/logging"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -13,6 +14,13 @@ const (
 )
 
 type handler struct {
+	logger logging.Logger
+}
+
+func NewHandler(logger logging.Logger) handlers.Handler {
+	return &handler{
+		logger: logger,
+	}
 }
 
 func (h *handler) Register(router *httprouter.Router) {
@@ -52,8 +60,4 @@ func (h *handler) PartiallyUpdateUser(w http.ResponseWriter, r *http.Request, pa
 func (h *handler) DeleteUser(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	w.WriteHeader(204)
 	w.Write([]byte("this is delete user"))
-}
-
-func NewHandler() handlers.Handler {
-	return &handler{}
 }
